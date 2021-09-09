@@ -8,6 +8,8 @@ node {
         withSonarQubeEnv ('sonar-server') {
             sh "${scannerHome}/bin/sonar-scanner"
         }
+    }
+    stage('quality gate') {
         timeout(time: 1, unit: 'HOURS') {
         def quality = waitForQualityGate()
             if (quality.ststus != 'OK') {
@@ -16,6 +18,3 @@ node {
             }
         }
 }
-
-
-
