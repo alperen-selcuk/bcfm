@@ -3,7 +3,7 @@ node {
         git 'https://github.com/alperen-selcuk/bcfm'
     }
 
-    stage('sonarqube report') {
+    stage('sonarqube analysis') {
         def scannerHome = tool 'sonar-scanner';
         withSonarQubeEnv ('sonar-server') {
             sh "${scannerHome}/bin/sonar-scanner"
