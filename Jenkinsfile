@@ -12,7 +12,7 @@ node {
     stage('quality gate') {
         timeout(time: 1, unit: 'HOURS') {
         def quality = waitForQualityGate()
-            if (quality.ststus != 'OK') {
+            if (quality.status != 'OK') {
                 error "pipeline aborted because of quality report: ${quality.status}"
                 }
             }
