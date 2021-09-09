@@ -8,8 +8,11 @@ node {
         withSonarQubeEnv ('sonar-server') {
             sh "${scannerHome}/bin/sonar-scanner"
         }
+        timeout(time: 1, unit: 'HOURS') {
+        def quality = waitForQualityGate()
+            if (quality.ststus != 'OK') {
+                error "pipeline aborted because of quality report: ${quality.ststus}"
+            }
+        }
     }
 }
-
-
-
