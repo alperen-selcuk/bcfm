@@ -13,8 +13,9 @@ node {
             if (quality.ststus != 'OK') {
                 error "pipeline aborted because of quality report: ${quality.ststus}"
                 }
-            }  
+            }
         }
-    }
 }
+
+
 
