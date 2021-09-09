@@ -13,7 +13,7 @@ node {
         timeout(time: 1, unit: 'HOURS') {
         def quality = waitForQualityGate()
             if (quality.ststus != 'OK') {
-                error "pipeline aborted because of quality report: ${quality.ststus}"
+                error "pipeline aborted because of quality report: ${quality.status}"
                 }
             }
         }
