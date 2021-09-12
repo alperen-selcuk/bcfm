@@ -8,7 +8,6 @@ pipeline {
     }
     agent {
         label "jk-pod"
-        yamlFile 'build.yaml'
     }
     stages {
         stage('Docker Build') {
