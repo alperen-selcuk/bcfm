@@ -7,11 +7,9 @@ pipeline {
         REGISTRY_CREDENTIAL = 'dockerhub'
     }
     agent {
-        kubernetes {
-            label "jk-pod"
-            defaultContainer 'jnlp'
-            yaml "build.yaml"
-        }
+        label "jk-pod"
+        defaultContainer 'jnlp'
+        yaml "build.yaml"
     }
     stages {
         //stage ('checkout') {
