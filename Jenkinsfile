@@ -7,7 +7,7 @@ pipeline {
         REGISTRY_CREDENTIAL = 'dockerhub'
     }
     agent {
-        label "kube-pod"
+        label "jk"
         yamlFile 'build.yaml'
     }
     stages {
