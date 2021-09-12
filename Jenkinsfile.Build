@@ -33,7 +33,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 container('docker') {
-                    sh "docker build -t ${REGISTRY}:${APP}:latest ."
+                    sh "docker build -t ${REGISTRY}:latest ."
                 }
             }
         }
@@ -42,7 +42,7 @@ pipeline {
                 container('docker') {
                     withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                         sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-                        sh "docker push ${REGISTRY}:${APP}:latest"
+                        sh "docker push ${REGISTRY}:latest"
                     }
                 }
             }
