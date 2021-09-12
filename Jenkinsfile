@@ -6,11 +6,9 @@ pipeline {
         REGISTRY = 'hasanalperen/bcfm'
         REGISTRY_CREDENTIAL = 'dockerhub'
     }
-    node {
-        label "kubernetes" {
-            defaultContainer 'jnlp'
-            yamlFile 'build.yaml'
-        }
+    agent {
+        label "kube-pod"
+        yamlFile 'build.yaml'
     }
     stages {
         stage('Docker Build') {
