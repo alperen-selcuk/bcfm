@@ -1,13 +1,13 @@
 pipeline {
     environment {
         NAME = "${env.BRANCH_NAME == "master" ? "bcfm-prod" : "bcfm-dev"}"
-        VERSION = ${BUILD_NUMBER}
+        VERSION = "${BUILD_NUMBER}"
         DOMAIN = 'localhost'
         REGISTRY = 'hasanalperen/bcfm'
         REGISTRY_CREDENTIAL = 'dockerhub'
     }
     agent {
-        kubernetes {
+        jk {
             defaultContainer 'jnlp'
             yamlFile 'build.yaml'
         }
