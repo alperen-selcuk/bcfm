@@ -7,7 +7,7 @@ pipeline {
         REGISTRY_CREDENTIAL = 'dockerhub'
     }
     agent {
-        jk {
+        label "jk" {
             defaultContainer 'jnlp'
             yamlFile 'build.yaml'
         }
