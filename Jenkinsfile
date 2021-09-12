@@ -7,7 +7,7 @@ pipeline {
         REGISTRY_CREDENTIAL = 'dockerhub'
     }
     agent {
-        jk-pod {
+        kubernetes {
             defaultContainer 'jnlp'
             yamlFile 'build.yaml'
         }
