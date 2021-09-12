@@ -1,10 +1,11 @@
 pipeline {
     environment {
-        NAME = "${env.BRANCH_NAME == "master" ? "bcfm-prod" : "bcfm-dev"}"
+        NAME = "${env.BRANCH_NAME == "master" ? "prod" : "dev"}"
         VERSION = "${BUILD_NUMBER}"
         DOMAIN = 'localhost'
         REGISTRY = 'hasanalperen/bcfm'
         REGISTRY_CREDENTIAL = 'dockerhub'
+        APP = 'my_app'
     }
     agent { 
         kubernetes {
@@ -32,15 +33,16 @@ pipeline {
         stage('Docker Build') {
             steps {
                 container('docker') {
-                    sh "docker build -t ${REGISTRY}:${VERSION}-${NAME} ."
+                    sh "docker build -t ${REGISTRY}:${APP}-${NAME}-${VERSION} ."
                 }
             }
         }
         stage('Docker Publish') {
             steps {
                 container('docker') {
-                    withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: ""]) {
-                        sh "docker push ${REGISTRY}:${VERSION}-${NAME}"
+                    withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+                        sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}
+                        sh "docker push ${REGISTRY}:${APP}-${NAME}"
                     }
                 }
             }
