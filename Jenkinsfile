@@ -11,7 +11,9 @@ pipeline {
     }
     stages {
         stage ('checkout') {
-            git 'https://github.com/alperen-selcuk/bcfm'
+            steps {
+                git 'https://github.com/alperen-selcuk/bcfm'
+            }
         }
         stage('Docker Build') {
             steps {
