@@ -10,8 +10,8 @@ pipeline {
         label "jk-pod" 
         }
     stages {
-        git 'https://github.com/alperen-selcuk/bcfm'
         stage('Docker Build') {
+            git 'https://github.com/alperen-selcuk/bcfm'
             steps {
                 container('docker') {
                     sh "docker build -t ${REGISTRY}:${VERSION}-${NAME} ."
