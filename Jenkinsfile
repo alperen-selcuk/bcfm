@@ -7,10 +7,8 @@ pipeline {
         REGISTRY_CREDENTIAL = 'dockerhub'
     }
     agent {
-        label "jk-pod" {
-            defaultContainer 'jnlp'
-            yamlFile 'build.yaml'
-        }
+        label "jk-pod"
+        yamlFile 'build.yaml'
     }
     stages {
         stage('Docker Build') {
