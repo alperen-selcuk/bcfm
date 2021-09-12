@@ -11,7 +11,6 @@ pipeline {
         }
     }
     stages {
-        git 'https://github.com/alperen-selcuk/bcfm'
         stage('Docker Build') {
             steps {
                 container('docker') {
