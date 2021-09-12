@@ -7,7 +7,7 @@ pipeline {
         REGISTRY_CREDENTIAL = 'dockerhub'
     }
     agent {
-        label "jk-pod"
+        label "jk"
     }
     stages {
         stage('Docker Build') {
