@@ -6,10 +6,31 @@ pipeline {
         REGISTRY = 'hasanalperen/bcfm'
         REGISTRY_CREDENTIAL = 'dockerhub'
     }
-    agent {
-        label "jk-pod" {
+    agent { 
+        kubernetes {
+            label "jk-pod" 
             defaultContainer 'jnlp'
-            yaml "build.yaml"
+            yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+labels:
+  component: ci
+spec:
+  containers:
+  - name: docker
+    image: docker:latest
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+    - mountPath: /var/run/docker.sock
+      name: docker-sock
+  volumes:
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
+"""
         }
     }
     stages {
