@@ -21,9 +21,6 @@ pipeline {
             }
         }
         stage('Docker Publish') {
-            when {
-                environment name: 'DEPLOY', value: 'true'
-            }
             steps {
                 container('docker') {
                     withDockerRegistry([credentialsId: "${REGISTRY_CREDENTIAL}", url: ""]) {
@@ -32,4 +29,5 @@ pipeline {
                 }
             }
         }
+    }
 }
