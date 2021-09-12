@@ -12,9 +12,6 @@ pipeline {
     stages {
         stage('Docker Build') {
             steps {
-                git 'https://github.com/alperen-selcuk/bcfm'
-            }
-            steps {
                 container('docker') {
                     sh "docker build -t ${REGISTRY}:${VERSION}-${NAME} ."
                 }
