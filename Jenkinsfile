@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        NAME = "${env.BRANCH_NAME == "master" ? "prod" : "dev"}"
+        //NAME = "${env.BRANCH_NAME == "master" ? "prod" : "dev"}"
         VERSION = "${BUILD_NUMBER}"
         DOMAIN = 'localhost'
         REGISTRY = 'hasanalperen/bcfm'
@@ -33,7 +33,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 container('docker') {
-                    sh "docker build -t ${REGISTRY}:${APP}-${NAME}-${VERSION} ."
+                    sh "docker build -t ${REGISTRY}:${APP}-${VERSION} ."
                 }
             }
         }
@@ -42,7 +42,7 @@ pipeline {
                 container('docker') {
                     withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                         sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-                        sh "docker push ${REGISTRY}:${APP}-${NAME}-${VERSION}"
+                        sh "docker push ${REGISTRY}:${APP}-${VERSION}"
                     }
                 }
             }
