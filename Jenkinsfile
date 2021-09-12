@@ -10,11 +10,9 @@ pipeline {
         label "jk-pod"
     }
     stages {
-        stage ("checkout") {
+        stage ('checkout') {
             git 'https://github.com/alperen-selcuk/bcfm'
         }
-    }
-    stages {
         stage('Docker Build') {
             steps {
                 container('docker') {
