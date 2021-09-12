@@ -7,14 +7,18 @@ pipeline {
         REGISTRY_CREDENTIAL = 'dockerhub'
     }
     agent {
-        label "jk-pod"
+        kubernetes {
+            label "jk-pod"
+            defaultContainer 'jnlp'
+            yaml "build.yaml"
+        }
     }
     stages {
-        stage ('checkout') {
-            steps {
-                git 'https://github.com/alperen-selcuk/bcfm'
-            }
-        }
+        //stage ('checkout') {
+            //steps {
+                //git 'https://github.com/alperen-selcuk/bcfm'
+            //}
+        //}
         stage('Docker Build') {
             steps {
                 container('docker') {
