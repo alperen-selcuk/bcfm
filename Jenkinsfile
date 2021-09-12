@@ -6,7 +6,7 @@ pipeline {
         REGISTRY = 'hasanalperen/bcfm'
         REGISTRY_CREDENTIAL = 'dockerhub'
     }
-    agent {
+    node {
         label "kubernetes" {
             defaultContainer 'jnlp'
             yamlFile 'build.yaml'
