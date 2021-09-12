@@ -30,12 +30,14 @@ pipeline {
         } 
     }
     stages {
-        stage('Docker Build') {
-            steps ('version') {
+        stage ('version'){
+            steps {
                 def ver = readFile(file: 'version.json')
                 println(data)
             }
-            steps ('build image'){
+        }
+        stage('Docker Build') {
+            steps {
                 container('docker') {
                     sh "docker build -t ${REGISTRY}:${APP}-${VERSION} ."
                 }
