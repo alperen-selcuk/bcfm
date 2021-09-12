@@ -32,8 +32,8 @@ pipeline {
     stages {
         stage ('version'){
             steps {
-                def ver = readFile(file: 'version.json')
-                println(data)
+                env.WORKSPACE = pwd()
+                def version = readFile "${env.WORKSPACE}/version.txt"
             }
         }
         stage('Docker Build') {
