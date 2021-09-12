@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
     - name: python
-      image: maven:3.3.9-jdk-8-alpine
+      image: python:3.7-alpine3.14
       command:
         - cat
       tty: true
