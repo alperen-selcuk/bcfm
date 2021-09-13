@@ -1,5 +1,3 @@
-#!/groovy
-
 pipeline {
     environment {
         //NAME = "${env.BRANCH_NAME == "master" ? "prod" : "dev"}"
@@ -9,6 +7,7 @@ pipeline {
         REGISTRY_CREDENTIAL = 'dockerhub'
         APP = 'my_app'
         HELM_REPO = "http://35.230.132.88:9090"
+        helmversion = 0.1.${VERSION}
     }
     agent { 
         kubernetes {
@@ -60,16 +59,11 @@ pipeline {
                 container('helm') {
                     sh "wget https://github.com/alperen-selcuk/bcfm/raw/master/my_app-0.1.0.tgz"
                     sh "tar -xvzf my_app-0.1.0.tgz"
-                    def helmversion = 0.1.${VERSION}
-                    
                     
                     sh "sed -i 's,/latest/${VERSION},g' ${APP}/values.yaml"
                     sh "helm package ${APP}"
                         
-                    def output = sh(script: "curl --data-binary '@${APP}-${helmversion}' ${HELM_REPO}/api/charts", returnStdout: true )
-                    if (output.contains("already exists")) {
-                        println("helm package already exist!!")
-                        }
+                    sh "curl --data-binary '@${APP}-${helmversion}' ${HELM_REPO}/api/charts"
                 } 
             }
         }
