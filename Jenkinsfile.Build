@@ -75,7 +75,7 @@ pipeline {
                     
                     sh "helm repo update"
                     
-                    sh "helm upgrade my-web-app chartmuseum/${APP} --version=${helmversion}"
+                    sh "helm upgrade my-app --force chartmuseum/${APP} --version=${helmversion}"
                 }
             }
         }
