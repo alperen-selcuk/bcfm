@@ -71,7 +71,7 @@ pipeline {
         stage('Helm Deploy') {
             steps {
                 container('helm') {
-                    helm repo add chartmuseum ${HELM_REPO}
+                    sh "helm repo add chartmuseum ${HELM_REPO}"
                     
                     sh "helm upgrade ${APP} chartmuseum/{APP} --version=${helmversion}"
                 }
