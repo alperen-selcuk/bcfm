@@ -74,7 +74,7 @@ pipeline {
                     
                     sh "helm repo update"
                     
-                    sh "helm upgrade my-app chartmuseum/${APP} --version=${helmversion} --set image.tag=${VERSION} --install"
+                    sh "helm upgrade my-app chartmuseum/${APP} --version=${helmversion} --set image.tag=${VERSION} --set controller.service.omitClusterIP=true --install"
                 }
             }
         }
