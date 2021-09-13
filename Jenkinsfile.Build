@@ -57,13 +57,13 @@ pipeline {
         stage('Helm Create') {
             steps {
                 container('helm') {
-                    sh "wget -o chart.tgz https://github.com/alperen-selcuk/bcfm/raw/master/my_app-0.1.0.tgz"
-                    sh "echo 'downloading...'"
-                    sh "tar -xvzf chart.tgz"
-                    sh "echo 'chart unzip...'"
-                    sh "sed -i 's/latest/${VERSION}/g' my_app/values.yaml"
-                    sh "helm package ${APP}"
-                    sh "curl --data-binary '@${APP}-${helmversion}' ${HELM_REPO}/api/charts"
+                    sh '''#!/bin/bash
+                        wget https://github.com/alperen-selcuk/bcfm/raw/master/my_app-0.1.0.tgz
+                        tar -xvzf chart.tgz
+                        sed -i 's/latest/${VERSION}/g' my_app/values.yaml
+                        helm package ${APP}
+                        curl --data-binary '@${APP}-${helmversion}' ${HELM_REPO}/api/charts
+                        '''
                 } 
             }
         }
