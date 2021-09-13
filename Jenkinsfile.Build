@@ -58,10 +58,10 @@ pipeline {
             steps {
                 container('helm') {
                     sh '''#!/bin/bash
-                        wget -c https://github.com/alperen-selcuk/bcfm/raw/master/my_app-0.1.0.tgz
+                        wget -c https://github.com/alperen-selcuk/bcfm/raw/master/my_app-1.tgz
                         tar -xvzf my_app-0.1.0.tgz
-                        sed -i 's/latest/${VERSION}/g' my_app/values.yaml
-                        sed -i 's/0.1.0/${helmversion}/g' my_app/Chart.yaml
+                        sed -i 's/TAG/${VERSION}/g' my_app/values.yaml
+                        sed -i 's/1/${VERSION}/g' my_app/Chart.yaml
                         helm package ${APP}
                         curl --data-binary '@${APP}-${VERSION}' ${HELM_REPO}/api/charts
                         '''
