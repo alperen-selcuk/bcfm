@@ -61,7 +61,7 @@ pipeline {
                         wget -c https://github.com/alperen-selcuk/bcfm/raw/master/my_app-1.tgz
                         tar -xvzf my_app-1.tgz
                         rm -f my_app-1.tgz
-                        helm package ${APP} --version=${helmversion} --set=image.tag=${VERSION}
+                        helm package ${APP} --version=${helmversion}
                         curl --data-binary @${APP}-${helmversion}.tgz ${HELM_REPO}/api/charts
                         '''
                 } 
@@ -74,7 +74,7 @@ pipeline {
                     
                     sh "helm repo update"
                     
-                    sh "helm upgrade my-app chartmuseum/${APP} --version=${helmversion} --force --install"
+                    sh "helm upgrade my-app chartmuseum/${APP} --version=${helmversion} --set image.tag=${VERSION} --force --install"
                 }
             }
         }
