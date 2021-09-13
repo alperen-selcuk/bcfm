@@ -1,3 +1,5 @@
+#!/groovy
+
 pipeline {
     environment {
         //NAME = "${env.BRANCH_NAME == "master" ? "prod" : "dev"}"
