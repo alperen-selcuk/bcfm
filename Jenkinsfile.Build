@@ -75,7 +75,7 @@ pipeline {
                     
                     sh "helm repo update"
                     
-                    sh "helm upgrade my-web-app chartmuseum/${APP} --namespace jenkins --version=${helmversion}"
+                    sh "helm upgrade my-web-app chartmuseum/${APP} --version=${helmversion}"
                 }
             }
         }
