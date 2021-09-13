@@ -70,5 +70,12 @@ pipeline {
                 } 
             }
         }
+        stage('Helm Deploy') {
+            steps {
+                container('helm') {
+                    helm upgrade --install ${HELM_REPO}/api/charts/${APP}-${helmversion}.tgz
+                }
+            }
+        }
     }
 }
