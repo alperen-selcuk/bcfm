@@ -66,8 +66,8 @@ pipeline {
                         sed -i 's/TAG/${VERSION}/g' my_app/values.yaml
                         helm package ${APP} --version=${helmversion}
                         
-                        helm push '${APP}-${helmversion}.tgz' chartmuseum
-                        //curl --data-binary '@${APP}-${helmversion}.tgz' ${HELM_REPO}/api/charts
+                        //helm push '${APP}-${helmversion}.tgz' chartmuseum
+                        curl --data-binary '@${APP}-${helmversion}.tgz' ${HELM_REPO}/api/charts
                         '''
                 } 
             }
