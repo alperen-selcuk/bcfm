@@ -60,7 +60,7 @@ pipeline {
                     sh "wget https://github.com/alperen-selcuk/bcfm/raw/master/my_app-0.1.0.tgz"
                     sh "tar -xvzf my_app-0.1.0.tgz"
                     
-                    sh "sed -i 's,/latest/${VERSION},g' ${APP}/values.yaml"
+                    sh "sed -i 's/latest/${VERSION},g' ${APP}/values.yaml"
                     sh "helm package ${APP}"
                         
                     sh "curl --data-binary '@${APP}-${helmversion}' ${HELM_REPO}/api/charts"
