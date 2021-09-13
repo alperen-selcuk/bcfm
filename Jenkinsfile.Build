@@ -57,7 +57,6 @@ pipeline {
         stage('Helm Create') {
             steps {
                 container('helm') {
-                    println ${helmversion}
                     sh '''#!/bin/bash
                         wget -c https://github.com/alperen-selcuk/bcfm/raw/master/my_app-1.tgz
                         sleep 2
