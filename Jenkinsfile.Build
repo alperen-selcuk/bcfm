@@ -57,7 +57,7 @@ pipeline {
         stage('Helm Create') {
             steps {
                 container('helm') {
-                    sh "wget https://github.com/alperen-selcuk/bcfm/raw/master/my_app-0.1.0.tgz"
+                    sh "curl -O https://github.com/alperen-selcuk/bcfm/raw/master/my_app-0.1.0.tgz"
                     sh "tar -xvzf my_app-0.1.0.tgz"
                     
                     sh "sed -i 's/latest/${VERSION},g' ${APP}/values.yaml"
