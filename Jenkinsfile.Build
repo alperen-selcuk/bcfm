@@ -58,11 +58,16 @@ pipeline {
             steps {
                 container('helm') {
                     sh '''#!/bin/bash
+                        helm repo add chartmuseum ${HELM_REPO}
+                    
                         wget -c https://github.com/alperen-selcuk/bcfm/raw/master/my_app-1.tgz
                         tar -xvzf my_app-1.tgz
+                        rm -f my_app-1.tgz
                         sed -i 's/TAG/${VERSION}/g' my_app/values.yaml
                         helm package ${APP} --version=${helmversion}
-                        curl --data-binary '@${APP}-${helmversion}.tgz' ${HELM_REPO}/api/charts
+                        
+                        helm push '${APP}-${helmversion}.tgz' chartmuseum
+                        //curl --data-binary '@${APP}-${helmversion}.tgz' ${HELM_REPO}/api/charts
                         '''
                 } 
             }
