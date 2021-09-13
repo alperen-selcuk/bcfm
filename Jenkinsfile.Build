@@ -59,6 +59,7 @@ pipeline {
                 container('helm') {
                     sh "wget https://github.com/alperen-selcuk/bcfm/raw/master/my_app-0.1.0.tgz"
                     sh "echo 'chart downloading...'"
+                    sh "sleep 5"
                     sh "tar -xvzf my_app-0.1.0.tgz"
                     sh "echo 'chart unzip...'"
                     sh "sed -i 's/latest/${VERSION}/g' my_app/values.yaml"
