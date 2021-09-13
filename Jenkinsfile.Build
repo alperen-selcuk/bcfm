@@ -23,6 +23,11 @@ pipeline {
                  volumeMounts: 
                  - mountPath: /var/run/docker.sock
                    name: docker-sock
+               - name: helm
+                 image: lachlanevenson/k8s-helm:v3.1.1
+                 command: 
+                 - cat
+                 tty: true
                volumes: 
                  - name : docker-sock
                    hostPath: 
@@ -55,18 +60,15 @@ pipeline {
                     sh "tar -xvzf my_app-0.1.0.tgz"
                     def helmversion = 0.1.${VERSION}
                     
-                    try {
-                        sh "sed -i 's,/latest/${VERSION},g' ${APP}/values.yaml"
-                        sh "helm package ${APP}"
+                    
+                    sh "sed -i 's,/latest/${VERSION},g' ${APP}/values.yaml"
+                    sh "helm package ${APP}"
                         
-                        def output = sh(script: "curl --data-binary '@${APP}-${helmversion}' ${HELM_REPO}/api/charts", returnStdout: true )
-                        if (output.contains("already exists")) {
-                            println("helm package already exist!!")
+                    def output = sh(script: "curl --data-binary '@${APP}-${helmversion}' ${HELM_REPO}/api/charts", returnStdout: true )
+                    if (output.contains("already exists")) {
+                        println("helm package already exist!!")
                         }
-                    } catch {error} {
-                        println(error)
-                    }
-                }
+                } 
             }
         }
     }
