@@ -7,7 +7,7 @@ pipeline {
         REGISTRY_CREDENTIAL = 'dockerhub'
         APP = 'my_app'
         HELM_REPO = "http://35.230.132.88:9090"
-        helmversion = '0.1."${VERSION}"'
+        helmversion = "0.1"+"."+"${VERSION}"
     }
     agent { 
         kubernetes {
@@ -57,6 +57,7 @@ pipeline {
         stage('Helm Create') {
             steps {
                 container('helm') {
+                    println ${helmversion}
                     sh '''#!/bin/bash
                         wget -c https://github.com/alperen-selcuk/bcfm/raw/master/my_app-1.tgz
                         sleep 2
