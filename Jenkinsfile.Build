@@ -6,6 +6,7 @@ pipeline {
         REGISTRY = 'hasanalperen/bcfm'
         REGISTRY_CREDENTIAL = 'dockerhub'
         APP = 'my_app'
+        HELM_REPO = "http://35.230.132.88:9090"
     }
     agent { 
         kubernetes {
@@ -43,6 +44,27 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                         sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
                         sh "docker push ${REGISTRY}:${VERSION}"
+                    }
+                }
+            }
+        }
+        stage('Helm Create') {
+            steps {
+                container('helm') {
+                    sh "wget https://github.com/alperen-selcuk/bcfm/raw/master/my_app-0.1.0.tgz"
+                    sh "tar -xvzf my_app-0.1.0.tgz"
+                    def helmversion = 0.1.${VERSION}
+                    
+                    try {
+                        sh "sed -i 's,/latest/${VERSION},g' ${APP}/values.yaml"
+                        sh "helm package ${APP}"
+                        
+                        def output = sh(script: "curl --data-binary '@${APP}-${helmversion}' ${HELM_REPO}/api/charts", returnStdout: true )
+                        if (output.contains("already exists")) {
+                            println("helm package already exist!!")
+                        }
+                    } catch {error} {
+                        println(error)
                     }
                 }
             }
