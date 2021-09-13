@@ -25,7 +25,7 @@ pipeline {
                  - mountPath: /var/run/docker.sock
                    name: docker-sock
                - name: helm
-                 image: lachlanevenson/k8s-helm:v3.1.1
+                 image: dtzar/helm-kubectl
                  command: 
                  - cat
                  tty: true
@@ -60,7 +60,7 @@ pipeline {
                     sh "curl -O https://github.com/alperen-selcuk/bcfm/raw/master/my_app-0.1.0.tgz"
                     sh "tar -xvzf my_app-0.1.0.tgz"
                     
-                    sh "sed -i 's/latest/${VERSION},g' ${APP}/values.yaml"
+                    sh "sed -i 's/latest/${VERSION}/g' my_app/values.yaml"
                     sh "helm package ${APP}"
                         
                     sh "curl --data-binary '@${APP}-${helmversion}' ${HELM_REPO}/api/charts"
