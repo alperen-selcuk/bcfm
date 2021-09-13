@@ -73,7 +73,9 @@ pipeline {
                 container('helm') {
                     sh "helm repo add chartmuseum ${HELM_REPO}"
                     
-                    sh "helm upgrade ${APP} chartmuseum/{APP} --version=${helmversion}"
+                    sh "helm repo update"
+                    
+                    sh "helm upgrade ${APP} chartmuseum/${APP} --version=${helmversion}"
                 }
             }
         }
