@@ -5,7 +5,7 @@ pipeline {
         DOMAIN = 'localhost'
         REGISTRY = 'hasanalperen/bcfm'
         REGISTRY_CREDENTIAL = 'dockerhub'
-        APP = 'my_app'
+        APP = 'web'
         HELM_REPO = "http://35.230.132.88:9090"
         helmversion = "0.1"+"."+"${VERSION}"
     }
@@ -58,9 +58,9 @@ pipeline {
             steps {
                 container('helm') {
                     sh '''#!/bin/bash
-                        wget -c https://github.com/alperen-selcuk/bcfm/raw/master/my_app-1.tgz
-                        tar -xvzf my_app-1.tgz
-                        rm -f my_app-1.tgz
+                        wget -c https://github.com/alperen-selcuk/bcfm/raw/master/web-1.tgz
+                        tar -xvzf web-1.tgz
+                        rm -f web-1.tgz
                         helm package ${APP} --version=${helmversion}
                         curl -L --data-binary @${APP}-${helmversion}.tgz ${HELM_REPO}/api/charts
                         '''
@@ -74,7 +74,7 @@ pipeline {
                     
                     sh "helm repo update"
                     
-                    sh "helm install chartmuseum/${APP} --version=${helmversion} --set image.tag=${VERSION} --generate-name"
+                    sh "helm upgrade chartmuseum/${APP} --version=${helmversion} --set image.tag=${VERSION} --force --install"
                 }
             }
         }
