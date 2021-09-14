@@ -61,7 +61,7 @@ pipeline {
                         wget -c https://github.com/alperen-selcuk/bcfm/raw/master/web-1.tgz
                         tar -xvzf web-1.tgz
                         rm -f web-1.tgz
-                        sed -i 's/web/"${APP}"/g' web/Chart.yaml
+                        sed -i 's/web/web-green/g' web/Chart.yaml
                         helm package web/. --version=${helmversion}
                         curl -L --data-binary @${APP}-${helmversion}.tgz ${HELM_REPO}/api/charts
                         '''
