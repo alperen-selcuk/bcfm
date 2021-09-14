@@ -74,7 +74,7 @@ pipeline {
                     
                     sh "helm repo update"
                     
-                    sh "helm install chartmuseum/${APP} --version=${helmversion} --set image.tag=${VERSION}"
+                    sh "helm install chartmuseum/${APP} --version=${helmversion} --set image.tag=${VERSION} --force --generate-name"
                 }
             }
         }
