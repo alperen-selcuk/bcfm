@@ -5,7 +5,7 @@ pipeline {
         DOMAIN = 'localhost'
         REGISTRY = 'hasanalperen/bcfm'
         REGISTRY_CREDENTIAL = 'dockerhub'
-        APP = 'web'
+        APP = 'web-green'
         HELM_REPO = "http://35.230.132.88:9090"
         helmversion = "0.1"+"."+"${VERSION}"
     }
@@ -74,7 +74,7 @@ pipeline {
                     
                     sh "helm repo update"
                     
-                    sh "helm upgrade my-web-app chartmuseum/${APP} --version=${helmversion} --set image.tag=${VERSION} --install"
+                    sh "helm upgrade my-web-app-green chartmuseum/${APP} --version=${helmversion} --set image.tag=${VERSION} --install"
                 }
             }
         }
