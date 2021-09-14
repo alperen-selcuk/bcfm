@@ -25,7 +25,7 @@ pipeline {
                  - mountPath: /var/run/docker.sock
                    name: docker-sock
                - name: helm
-                 image: alpine/helm:3.6.1
+                 image: devth/helm
                  command: 
                  - cat
                  tty: true
