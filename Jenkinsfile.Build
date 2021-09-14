@@ -25,7 +25,7 @@ pipeline {
                  - mountPath: /var/run/docker.sock
                    name: docker-sock
                - name: helm
-                 image: appuio/helm
+                 image: dtzar/helm-kubectl
                  command: 
                  - cat
                  tty: true
@@ -62,7 +62,7 @@ pipeline {
                         tar -xvzf my_app-1.tgz
                         rm -f my_app-1.tgz
                         helm package ${APP} --version=${helmversion}
-                        curl --data-binary @${APP}-${helmversion}.tgz ${HELM_REPO}/api/charts
+                        curl -L --data-binary @${APP}-${helmversion}.tgz ${HELM_REPO}/api/charts
                         '''
                 } 
             }
@@ -74,7 +74,7 @@ pipeline {
                     
                     sh "helm repo update"
                     
-                    sh "helm upgrade my-app chartmuseum/${APP} --version=${helmversion} --set image.tag=${VERSION} --install"
+                    sh "helm my-web-app install chartmuseum/${APP} --version=${helmversion} --set image.tag=${VERSION}"
                 }
             }
         }
