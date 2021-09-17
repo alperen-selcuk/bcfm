@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: my-ingress
+  namespace: jenkins
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: bcfm.34.102.60.81.nip.io
+    http:
+      paths:
+      - path: /bcfm
+        backend:
+          serviceName: my-web-app-green-web-green
+          servicePort: 80
