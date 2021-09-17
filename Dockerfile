@@ -1,7 +1,10 @@
-FROM python:3
-COPY ./requirements.txt /requirements.txt
-WORKDIR /
-RUN pip install -r requirements.txt
-COPY . /
-ENTRYPOINT [ "python3" ]
-CMD [ "app.py" ]
+FROM python:3.6-alpine3.6
+
+WORKDIR /usr/src/app
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD [ "python", "./app.py" ]
