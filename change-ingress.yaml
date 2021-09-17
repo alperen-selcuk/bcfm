@@ -1,26 +1,19 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: my-ingress
   namespace: jenkins
   annotations:
     kubernetes.io/ingress.class: nginx
-  spec:
-    rules:
-    - host: bcfm.34.102.60.81.nip.io
-      http:
-        paths:
-        - backend:
-            service:
-              name: my-web-app-web
-              port:
-                number: 80
-          path: /bcfm
-          pathType: Exact
-        - backend:
-            service:
-              name: my-web-app-web
-              port:
-                number: 80
-          path: /metrics
-          pathType: Exact
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    ingress.kubernetes.io/rewrite-target: "/"
+spec:
+  rules:
+  - host: bcfm.34.102.60.81.nip.io
+    http:
+      paths:
+      - path: "/(bcfm|metrics)"
+        pathType: Exact
+        backend:
+          serviceName: my-web-app-web
+          servicePort: 80
