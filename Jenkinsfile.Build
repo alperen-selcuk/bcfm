@@ -101,7 +101,7 @@ pipeline {
                     sh '''#!/bin/bash
                     output=$(curl --write-out "%{http_code}\n" "http://bcfm.34.102.60.81.nip.io/bcfm" --output output.txt --silent)
                     
-                    if [ ${output} == '200' ]; then echo 'uygulama düzgün'; else echo 'uygulama hata'; fi
+                    if [ ${output} == '200' ]; then echo 'uygulama düzgün'; else exit 1; fi
                     
                     '''
                 }
