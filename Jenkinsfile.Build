@@ -78,5 +78,33 @@ pipeline {
                 }
             }
         }
+        stage('validate app') {
+            steps {
+                container('helm') {
+                    sh '''#!/bin/bash
+                    output=$(curl --write-out "%{http_code}\n" "http://bcfm.34.102.60.81.nip.io/bcfm" --output output.txt --silent)
+                    
+                    if [ ${output} == '200' ]; then echo 'APPLICATION WORKS FINE'; else exit 1; fi
+                    
+                    '''
+                }
+            }
+        }
+        stage ('kubectl') { 
+            steps { 
+                container('google') { 
+                    sh '''#!/bin/bash
+                    
+                    cd /root
+                    
+                    gcloud auth activate-service-account --key-file jenkins.json
+                    
+                    curl -O "https://raw.githubusercontent.com/alperen-selcuk/bcfm/blue-green/change-ingress.yaml"
+                    
+                    kubectl --kubeconfig .kube/config.txt apply -f change-ingress.yaml
+                    '''
+                }
+            }
+        }
     }
 }
