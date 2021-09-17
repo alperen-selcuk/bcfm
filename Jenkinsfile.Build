@@ -45,12 +45,12 @@ pipeline {
                       path: /var/run/docker.sock
                  - name: console-root
                    hostPath: 
-                      path: /home/hasan_alperen_console/sa
+                      path: /var/sa
                  - name: console-kube
                    hostPath: 
-                      path: /home/hasan_alperen_console/sa/.kube
+                      path: /var/sa/.kube
              '''
-        } 
+        }
     }
     stages {
         stage('Docker Build') {
@@ -92,6 +92,32 @@ pipeline {
                     sh "helm repo update"
                     
                     sh "helm upgrade my-web-app-green chartmuseum/${APP} --version=${helmversion} --set image.tag=${VERSION} --install"
+                }
+            }
+        }
+        stage('validate blue green') {
+            steps {
+                container('helm') {
+                    sh '''#!/bin/bash
+                    output=$(curl --write-out "%{http_code}\n" "http://bcfm.34.102.60.81.nip.io/bcfm" --output output.txt --silent)
+                    
+                    if [ ${output} == '200' ]; then echo 'uygulama düzgün'; else echo 'uygulama hata'; fi
+                    
+                    '''
+                }
+            }
+        }
+        stage ('kubectl') { 
+            steps { 
+                container('google') { 
+                    sh '''#!/bin/bash
+                    
+                    cd /root
+                    
+                    gcloud auth activate-service-account --key-file jenkins.json
+                    
+                    kubectl --kubeconfig .kube/config.txt get pods -n jenkins
+                    '''
                 }
             }
         }
