@@ -1,1 +1,1 @@
-# bcfm demo blue-green
+# metrics demo
