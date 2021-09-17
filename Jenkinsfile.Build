@@ -24,31 +24,10 @@ pipeline {
                  volumeMounts: 
                  - mountPath: /var/run/docker.sock
                    name: docker-sock
-               - name: helm
-                 image: dtzar/helm-kubectl
-                 command: 
-                 - cat
-                 tty: true
-               - name: google
-                 image: google/cloud-sdk
-                 command:
-                 - cat
-                 tty: true
-                 volumeMounts: 
-                 - mountPath: /root
-                   name: console-root
-                 - mountPath: /root/.kube
-                   name: console-kube
                volumes: 
                  - name : docker-sock
                    hostPath: 
                       path: /var/run/docker.sock
-                 - name: console-root
-                   hostPath: 
-                      path: /var/sa
-                 - name: console-kube
-                   hostPath: 
-                      path: /var/sa/.kube
              '''
         }
     }
@@ -67,46 +46,6 @@ pipeline {
                         sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
                         sh "docker push ${REGISTRY}:${VERSION}"
                     }
-                }
-            }
-        }
-        stage('Helm Create') {
-            steps {
-                container('helm') {
-                    sh '''#!/bin/bash
-                        wget -c https://github.com/alperen-selcuk/bcfm/raw/master/web-1.tgz
-                        tar -xvzf web-1.tgz
-                        rm -f web-1.tgz
-                        helm package ${APP} --version=${helmversion}
-                        curl -L --data-binary @${APP}-${helmversion}.tgz ${HELM_REPO}/api/charts
-                        '''
-                } 
-            }
-        }
-        stage('Helm Deploy') {
-            steps {
-                container('helm') {
-                    sh "helm repo add chartmuseum ${HELM_REPO}"
-                    
-                    sh "helm repo update"
-                    
-                    sh "helm upgrade my-web-app chartmuseum/${APP} --version=${helmversion} --set image.tag=${VERSION} --install"
-                }
-            }
-        }
-        stage ('kubectl') { 
-            steps { 
-                container('google') { 
-                    sh '''#!/bin/bash
-                    
-                    cd /root
-                    
-                    gcloud auth activate-service-account --key-file jenkins.json
-                    
-                    curl -O "https://raw.githubusercontent.com/alperen-selcuk/bcfm/master/change-ingress.yaml"
-                    
-                    kubectl --kubeconfig .kube/config.txt apply -f change-ingress.yaml
-                    '''
                 }
             }
         }
