@@ -12,5 +12,5 @@ spec:
       paths:
       - path: /bcfm
         backend:
-          serviceName: my-web-app-green
+          serviceName: my-web-app
           servicePort: 80
