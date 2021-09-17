@@ -1,7 +1,8 @@
 pipeline {
     environment {
         //NAME = "${env.BRANCH_NAME == "master" ? "prod" : "dev"}"
-        VERSION = "${BUILD_NUMBER}"
+        //VERSION = "${BUILD_NUMBER}"
+        VERSION = "222"
         DOMAIN = 'localhost'
         REGISTRY = 'hasanalperen/bcfm'
         REGISTRY_CREDENTIAL = 'dockerhub'
