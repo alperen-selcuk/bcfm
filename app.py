@@ -1,16 +1,37 @@
-from flask import Flask
-from prometheus_client import make_wsgi_app
-from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from werkzeug.serving import run_simple
-from flask_prometheus_metrics import register_metrics
+import random
+import time
 
+from flask import Flask, render_template_string, abort
+from prometheus_client import generate_latest, REGISTRY, Counter, Gauge, Histogram
 
 app = Flask(__name__)
-@app.route("/bcfm")
+
+# A counter to count the total number of HTTP requests
+REQUESTS = Counter('http_requests_total', 'Total HTTP Requests (count)', ['method', 'endpoint', 'status_code'])
+
+# A gauge (i.e. goes up and down) to monitor the total number of in progress requests
+IN_PROGRESS = Gauge('http_requests_inprogress', 'Number of in progress HTTP requests')
+
+# A histogram to measure the latency of the HTTP requests
+TIMINGS = Histogram('http_request_duration_seconds', 'HTTP request latency (seconds)')
+
+
+
+
+@app.route('/bcfm')
+@IN_PROGRESS.track_inprogress()
+@TIMINGS.time()
 def index():
-  return "BCFM"
+    return "BCFM"
 
-register_metrics(app, app_version="v0.1.2", app_config="staging")
-dispatcher = DispatcherMiddleware(app.wsgi_app, {"/metrics": make_wsgi_app()})
 
-run_simple(hostname="0.0.0.0", application=dispatcher)
+@app.route('/metrics')
+@IN_PROGRESS.track_inprogress()
+@TIMINGS.time()
+def metrics():
+    REQUESTS.labels(method='GET', endpoint="/metrics", status_code=200).inc()
+    return generate_latest(REGISTRY)
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
