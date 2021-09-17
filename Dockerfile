@@ -1,6 +1,10 @@
-FROM python:3.8.2-alpine
-RUN pip3 install --upgrade pip && pip3 install --no-cache-dir Flask flask_prometheus_metrics
-WORKDIR /
-COPY . /
-ENTRYPOINT [ "python3" ]
-CMD [ "app.py" ]
+FROM python:3.6-alpine3.6
+
+WORKDIR /usr/src/app
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD [ "python", "./app.py" ]
