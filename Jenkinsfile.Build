@@ -94,18 +94,6 @@ pipeline {
                 }
             }
         }
-        stage('validate app') {
-            steps {
-                container('helm') {
-                    sh '''#!/bin/bash
-                    output=$(curl --write-out "%{http_code}\n" "http://bcfm.34.102.60.81.nip.io/bcfm" --output output.txt --silent)
-                    
-                    if [ ${output} == '200' ]; then echo 'APPLICATION WORKS FINE'; else exit 1; fi
-                    
-                    '''
-                }
-            }
-        }
         stage ('kubectl') { 
             steps { 
                 container('google') { 
