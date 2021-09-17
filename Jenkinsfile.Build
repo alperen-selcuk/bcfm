@@ -99,7 +99,7 @@ pipeline {
                     
                     gcloud auth activate-service-account --key-file jenkins.json
                     
-                    curl -O "https://raw.githubusercontent.com/alperen-selcuk/bcfm/blue-green/change-ingress.yaml"
+                    curl -O "https://raw.githubusercontent.com/alperen-selcuk/bcfm/master/change-ingress.yaml"
                     
                     kubectl --kubeconfig .kube/config.txt apply -f change-ingress.yaml
                     '''
