@@ -29,12 +29,28 @@ pipeline {
                  command: 
                  - cat
                  tty: true
+               - name: google
+                 image: google/cloud-sdk
+                 command:
+                 - cat
+                 tty: true
+                 volumeMounts: 
+                 - mountPath: /root
+                   name: console-root
+                 - mountPath: /root/.kube
+                   name: console-kube
                volumes: 
                  - name : docker-sock
                    hostPath: 
                       path: /var/run/docker.sock
+                 - name: console-root
+                   hostPath: 
+                      path: /var/sa
+                 - name: console-kube
+                   hostPath: 
+                      path: /var/sa/.kube
              '''
-        } 
+        }
     }
     stages {
         stage('Docker Build') {
