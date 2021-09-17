@@ -5,7 +5,7 @@ pipeline {
         DOMAIN = 'localhost'
         REGISTRY = 'hasanalperen/bcfm'
         REGISTRY_CREDENTIAL = 'dockerhub'
-        APP = 'web'
+        APP = 'web-metric'
         HELM_REPO = "http://35.230.132.88:9090"
         helmversion = "0.1"+"."+"${VERSION}"
     }
