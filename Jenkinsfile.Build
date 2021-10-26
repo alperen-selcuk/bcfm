@@ -3,10 +3,10 @@ pipeline {
         //NAME = "${env.BRANCH_NAME == "master" ? "prod" : "dev"}"
         VERSION = "${BUILD_NUMBER}"
         DOMAIN = 'localhost'
-        REGISTRY = 'hasanalperen/bcfm'
+        REGISTRY = 'YOUR_REPOSITORY'
         REGISTRY_CREDENTIAL = 'dockerhub'
         APP = 'web'
-        HELM_REPO = "http://35.230.132.88:9090"
+        HELM_REPO = "YOUR_HELM_REPO"
         helmversion = "0.1"+"."+"${VERSION}"
     }
     agent { 
@@ -74,7 +74,7 @@ pipeline {
             steps {
                 container('helm') {
                     sh '''#!/bin/bash
-                        wget -c https://github.com/alperen-selcuk/bcfm/raw/master/web-1.tgz
+                        wget -c https://github.com/alperen-selcuk/bcfm/raw/master/web-1.tgz ##this is shared chart you can create your own charts file
                         tar -xvzf web-1.tgz
                         rm -f web-1.tgz
                         helm package ${APP} --version=${helmversion}
@@ -91,22 +91,6 @@ pipeline {
                     sh "helm repo update"
                     
                     sh "helm upgrade my-web-app chartmuseum/${APP} --version=${helmversion} --set image.tag=${VERSION} --install"
-                }
-            }
-        }
-        stage ('kubectl') { 
-            steps { 
-                container('google') { 
-                    sh '''#!/bin/bash
-                    
-                    cd /root
-                    
-                    gcloud auth activate-service-account --key-file jenkins.json
-                    
-                    curl -O "https://raw.githubusercontent.com/alperen-selcuk/bcfm/master/change-ingress.yaml"
-                    
-                    kubectl --kubeconfig .kube/config.txt apply -f change-ingress.yaml
-                    '''
                 }
             }
         }
